@@ -1,5 +1,8 @@
 #!/bin/sh
-hostfile="/etc/hosts"
+hostfile="/dev/shm/sindex_api_host"
+if [ ! -f "${hostfile}" ]; then
+ touch "${hostfile}"
+fi
 hostnames="recommend.match.sina.com.cn weibointra.match.sina.com.cn"
 for hostname in ${hostnames};
 do
@@ -13,7 +16,8 @@ do
 			sed -i "s/[.0-9]\{7,15\} \(${hostname}\)/${hostip} \1/" ${hostfile}
 		else
 			#add
-			sed -i "\$a${hostip} ${hostname}" ${hostfile}
+			#sed -i "\$a${hostip} ${hostname}" ${hostfile}
+			echo "${hostip} ${hostname}" >> ${hostfile}
 		fi
 	fi
 done
